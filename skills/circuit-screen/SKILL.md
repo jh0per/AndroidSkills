@@ -134,7 +134,8 @@ for (screen in listOf(HomeScreen, DetailScreen("id"), ProfileScreen)) {
 }
 ```
 
-R8: keep Parcelable `CREATOR`s and screen classes (`-keep class com.example.app.**Screen { *; }`).
+R8: `@Parcelize` already keeps `CREATOR`; if restore after process death fails on a minified build, add
+`-keepnames class com.example.app.**Screen` (names only), never `{ *; }` (see `android-release-signing`).
 Process-death restore is where a missing rule shows up.
 
 ## Rules that bite

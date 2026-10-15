@@ -29,6 +29,7 @@ Nothing here requires Circuit. The shared skills assume ViewModel + Navigation C
 |---|---|
 | [material3-guidelines](skills/material3-guidelines/SKILL.md) | Which Material 3 component for which job, colour/type/shape roles, window size classes, motion, accessibility |
 | [compose-ui-practices](skills/compose-ui-practices/SKILL.md) | Component reuse, tokens, 48dp targets, inset ownership, one list-state owner, messages, adaptive layout |
+| [adaptive-layouts](skills/adaptive-layouts/SKILL.md) | Phones to desktop windows: width-first window size classes, navigation suite, list-detail/supporting panes and their back behaviour, foldable postures, targetSdk 36 orientation-lock removal, keyboard/mouse basics |
 | [edge-to-edge-insets](skills/edge-to-edge-insets/SKILL.md) | enableEdgeToEdge and SDK 35+ enforcement, one inset owner per edge, IME without double padding, scrims, dialogs, gesture/3-button verification |
 | [compose-performance-audit](skills/compose-performance-audit/SKILL.md) | Evidence-based Compose performance: phase deferral, stability without cargo cult, lazy layout rules, effects, drawing, Modifier.Node, audit report |
 | [design-system-module](skills/design-system-module/SKILL.md) | Tokens and theme, skeletons/shimmer, loaders, dialogs and notices, previews, splash and launcher icon |
@@ -37,6 +38,7 @@ Nothing here requires Circuit. The shared skills assume ViewModel + Navigation C
 | [paging3-compose](skills/paging3-compose/SKILL.md) | PagingSource, Pager placement, grid load states, retry vs refresh, refresh on reconnect |
 | [fonts-management](skills/fonts-management/SKILL.md) | App typography, font registry, verified downloads, priority queues, variable fonts |
 | [localization](skills/localization/SKILL.md) | Strings and plurals, locale reading, per-app language, Accept-Language, error wording from codes |
+| [glance-app-widgets](skills/glance-app-widgets/SKILL.md) | Home-screen widgets with Glance: provider XML and sizing, responsive layouts, GlanceTheme, data/refresh/state, actions, previews and widget tests |
 
 ### Data, network and platform
 
@@ -48,10 +50,12 @@ Nothing here requires Circuit. The shared skills assume ViewModel + Navigation C
 | [unsaved-changes-recovery](skills/unsaved-changes-recovery/SKILL.md) | Dirty baseline, back handling, Save/Discard/Cancel, autosave, crash recovery, transactions |
 | [media-storage](skills/media-storage/SKILL.md) | MediaStore saves, sharing, pickers and capture, bounded decoding, Coil, WorkManager uploads |
 | [media-video-audio](skills/media-video-audio/SKILL.md) | Media3 players and cache, thumbnails, waveforms, trim, Transformer transcoding |
+| [camerax-capture](skills/camerax-capture/SKILL.md) | In-app camera with CameraX in Compose: one lifecycle owner for binding, viewfinder, photo and video capture, ImageAnalysis/ML Kit, focus, zoom, torch, tests and real-device checks |
 | [image-filters-gpu](skills/image-filters-gpu/SKILL.md) | RenderScript migration, AGSL, Vulkan/GL fallbacks, colour LUT pipelines, pixel verification |
 | [on-device-ml](skills/on-device-ml/SKILL.md) | ML Kit behind a seam, model availability, LiteRT, server fallback |
 | [native-interop](skills/native-interop/SKILL.md) | JNI with CMake or Rust, callbacks, ABI filters, symbols, 16 KB alignment |
 | [push-notifications](skills/push-notifications/SKILL.md) | FCM data messages, channels, permission timing, token registration, tap routing |
+| [runtime-permissions](skills/runtime-permissions/SKILL.md) | Permission inventory and least privilege, in-context requests with rationale/settings fallback, ViewModel-owned state, background location, FGS types, exact alarms, tests and audit report |
 
 ### Accounts, money and policy
 
@@ -72,7 +76,7 @@ Nothing here requires Circuit. The shared skills assume ViewModel + Navigation C
 | [gradle-build-setup](skills/gradle-build-setup/SKILL.md) | Version catalog, toolchain, AGP 9 notes, config values, convention plugins, custom tasks, build speed |
 | [gradle-quality-gate](skills/gradle-quality-gate/SKILL.md) | One `verify` task for local and CI, detekt, ktlint, lint, merged-manifest checks, managed devices |
 | [android-ci-distribution](skills/android-ci-distribution/SKILL.md) | GitHub Actions / GitLab CI, caching, signing from secrets, Fastlane, App Distribution |
-| [android-release-signing](skills/android-release-signing/SKILL.md) | Secrets out of git, optional signing with fail-fast, R8 keep rules, AAB verification, versionCode |
+| [android-release-signing](skills/android-release-signing/SKILL.md) | Secrets out of git, optional signing with fail-fast, R8 keep rules and keep-rule audit, AAB verification, versionCode |
 | [android-testing](skills/android-testing/SKILL.md) | Test dispatchers, ViewModel tests, Robolectric/Room, Compose instrumented tests, contrast and touch checks |
 | [app-startup-performance](skills/app-startup-performance/SKILL.md) | Macrobenchmark, Baseline/Startup Profiles, reportFullyDrawn, startup hygiene, tracing, JankStats, ANR triage, before/after report |
 | [architecture-guard-tests](skills/architecture-guard-tests/SKILL.md) | Source-level guards: one owner, banned APIs, ratchets, contracts, each with a control |
@@ -115,8 +119,10 @@ mkdir -p ~/.claude/skills
 ln -s ~/AndroidSkills/skills/* ~/.claude/skills/
 ```
 
-Other agents that read the same `SKILL.md` format can point at the same folders (for example
-`.agents/skills/`).
+**Other agents:** the repo also ships `.codex-plugin/plugin.json` and an
+`.agents/plugins/marketplace.json` marketplace entry, so agents that install plugins from those
+manifests (Codex and compatible tools) can add it from `jh0per/AndroidSkills` directly. Agents
+that only read the `SKILL.md` format can point at the same folders (for example `.agents/skills/`).
 
 ## Make them yours
 

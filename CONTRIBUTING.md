@@ -11,7 +11,7 @@ skills/<name>/
 
 - `<name>` is lowercase-hyphenated, at most 64 characters, and equals `name` in the frontmatter.
 - Run `python3 scripts/validate_skills.py --fix` before committing. It checks the rules below and
-  rewrites the skill list in `.claude-plugin/plugin.json`. CI runs the same script.
+  rewrites the skill list in `.claude-plugin/plugin.json` and `.codex-plugin/plugin.json`. CI runs the same script.
 
 ## Frontmatter
 
@@ -62,7 +62,7 @@ component registries, API origins). Those belong in the project's `CLAUDE.md`.
 ## Releasing
 
 Run the **Release** workflow (Actions → Release → Run workflow) with a tag such as `v0.3.0`. It
-validates the skills, writes the version into `.claude-plugin/plugin.json`, commits and tags
+validates the skills, writes the version into both plugin manifests, commits and tags
 `main`, and publishes a GitHub release with a zip of the skills and a list of skills changed since
 the previous tag. Plugin installs pin to the manifest version, so every change people should
 receive needs a release.

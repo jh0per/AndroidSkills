@@ -11,7 +11,8 @@ Checks (mirroring the agent-skills spec and the conventions in CONTRIBUTING.md):
   - `metadata.last-updated` is an ISO date and `metadata.keywords` is a non-empty list
   - relative markdown links and `references/...` mentions resolve to files
   - SKILL.md body stays under 300 lines (move depth into references/)
-  - every skill folder is listed in .claude-plugin/plugin.json and vice versa
+  - every skill folder is listed in .claude-plugin/plugin.json and .codex-plugin/plugin.json,
+    and the two manifests carry the same version
   - README.md links every skill
 """
 from __future__ import annotations
@@ -24,6 +25,7 @@ import sys
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 SKILLS = ROOT / "skills"
 MANIFEST = ROOT / ".claude-plugin" / "plugin.json"
+CODEX_MANIFEST = ROOT / ".codex-plugin" / "plugin.json"
 README = ROOT / "README.md"
 MAX_BODY_LINES = 300
 
@@ -146,6 +148,24 @@ def main(argv: list[str]) -> int:
             problems.append(
                 f"{MANIFEST.relative_to(ROOT)}: skills list out of date; run scripts/validate_skills.py --fix"
             )
+
+    codex = json.loads(CODEX_MANIFEST.read_text(encoding="utf-8")) if CODEX_MANIFEST.exists() else None
+    codex_expected = [{"source": {"path": p}} for p in expected]
+    if codex is None:
+        problems.append(f"{CODEX_MANIFEST.relative_to(ROOT)}: missing")
+    else:
+        version = (manifest or {}).get("version")
+        if codex.get("skills") != codex_expected or codex.get("version") != version:
+            if fix:
+                codex["skills"] = codex_expected
+                codex["version"] = version
+                CODEX_MANIFEST.write_text(json.dumps(codex, indent=2) + "\n", encoding="utf-8")
+                print(f"updated {CODEX_MANIFEST.relative_to(ROOT)} ({len(expected)} skills)")
+            else:
+                problems.append(
+                    f"{CODEX_MANIFEST.relative_to(ROOT)}: skills list or version out of date; "
+                    "run scripts/validate_skills.py --fix"
+                )
 
     readme = README.read_text(encoding="utf-8") if README.exists() else ""
     for folder in folders:
