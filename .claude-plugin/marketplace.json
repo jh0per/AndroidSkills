@@ -1,0 +1,20 @@
+{
+  "name": "android-kmp-skills",
+  "description": "Opinionated Android and Kotlin Multiplatform skills for coding agents.",
+  "owner": {
+    "name": "jh0per"
+  },
+  "plugins": [
+    {
+      "name": "android-kmp-skills",
+      "description": "Project-agnostic skills for Android and Kotlin Multiplatform app development: architecture, Compose UI, networking, persistence, media, accounts and billing, security, performance, build, CI, release and testing.",
+      "author": {
+        "name": "jh0per"
+      },
+      "category": "development",
+      "source": "./",
+      "homepage": "https://github.com/jh0per/AndroidSkills",
+      "license": "MIT"
+    }
+  ]
+}

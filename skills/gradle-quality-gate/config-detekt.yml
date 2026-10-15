@@ -1,0 +1,58 @@
+config:
+  validation: true
+
+build:
+  maxIssues: 0
+
+potential-bugs:
+  # Turn off only if type resolution cannot see through delegates/sealed results in your codebase
+  # and every finding is a false positive. The Kotlin compiler already rejects truly unreachable code.
+  UnreachableCode:
+    active: false
+
+coroutines:
+  # Same root cause as above when symbols resolve to error types; the compiler warns on real cases.
+  RedundantSuspendModifier:
+    active: false
+  InjectDispatcher:
+    active: true
+    excludes: ['**/commonTest/**', '**/test/**', '**/androidTest/**', '**/androidInstrumentedTest/**']
+
+style:
+  MaxLineLength:
+    active: true
+    maxLineLength: 160
+  MagicNumber:
+    active: false
+  ReturnCount:
+    active: false
+  UnusedPrivateMember:
+    active: true
+  ForbiddenImport:
+    active: true
+    imports:
+      # Subcomposition per list cell is expensive; draw the placeholder as a layer under AsyncImage.
+      - value: 'coil3.compose.SubcomposeAsyncImage'
+        reason: 'Use AsyncImage with the placeholder drawn underneath.'
+
+complexity:
+  CyclomaticComplexMethod:
+    # An exhaustive `when` that is the whole body is a dispatch table, not complexity.
+    ignoreSingleWhenExpression: true
+  LargeClass:
+    excludes: ['**/commonTest/**', '**/test/**', '**/androidTest/**']
+  LongMethod:
+    active: false
+  LongParameterList:
+    active: false
+  TooManyFunctions:
+    active: false
+
+naming:
+  MatchingDeclarationName:
+    active: false
+  FunctionNaming:
+    active: true
+    functionPattern: '[a-z][a-zA-Z0-9]*'
+    ignoreAnnotated:
+      - Composable
