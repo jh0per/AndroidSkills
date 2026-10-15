@@ -20,6 +20,7 @@
   ],
   "skills": [
     "./skills/account-compliance",
+    "./skills/adaptive-layouts",
     "./skills/analytics-feature-flags",
     "./skills/android-app-security",
     "./skills/android-ci-distribution",
@@ -28,6 +29,7 @@
     "./skills/android-testing",
     "./skills/app-startup-performance",
     "./skills/architecture-guard-tests",
+    "./skills/camerax-capture",
     "./skills/circuit-screen",
     "./skills/compose-canvas-gestures",
     "./skills/compose-mvi-viewmodel",
@@ -40,6 +42,7 @@
     "./skills/edge-to-edge-insets",
     "./skills/firebase-auth",
     "./skills/fonts-management",
+    "./skills/glance-app-widgets",
     "./skills/gradle-build-setup",
     "./skills/gradle-quality-gate",
     "./skills/image-filters-gpu",
@@ -60,6 +63,7 @@
     "./skills/play-billing",
     "./skills/predictive-back",
     "./skills/push-notifications",
+    "./skills/runtime-permissions",
     "./skills/unsaved-changes-recovery",
     "./skills/verification-discipline",
     "./skills/views-compose-interop"

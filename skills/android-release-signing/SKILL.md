@@ -1,6 +1,6 @@
 ---
 name: android-release-signing
-description: Release mechanics for an Android app - keystore and secrets handling that never reaches git, optional signing config with fail-fast checks, R8/resource shrinking and keep rules, verifying the AAB signature, versionCode from the store, Play App Signing fingerprints for Google sign-in, crash-symbol upload, and Play or Firebase App Distribution publishing. Use when building a release, configuring signing, debugging a store upload refusal, or a release-only crash.
+description: Release mechanics for an Android app - keystore and secrets handling that never reaches git, optional signing config with fail-fast checks, R8/resource shrinking, keep rules and a keep-rule audit for size, verifying the AAB signature, versionCode from the store, Play App Signing fingerprints for Google sign-in, crash-symbol upload, and Play or Firebase App Distribution publishing. Use when building a release, configuring signing, debugging a store upload refusal, or a release-only crash.
 metadata:
   last-updated: '2026-10-15'
   keywords:
@@ -9,6 +9,8 @@ metadata:
   - signing config
   - R8
   - keep rules
+  - proguard
+  - app size
   - AAB
   - versionCode
   - Play App Signing
@@ -104,6 +106,22 @@ password. Aliases are case-sensitive.
 R8 failures surface at the point of use, not at build time. Keep a commented `proguard-rules.pro`
 (or `src/main/keepRules/*.keep`) and never delete a rule without exercising its flow on a minified
 build. Typical set: `keep-rules.pro` in this folder.
+
+Keep rules cost size and speed too: a package-wide `-keep class com.google.firebase.** { *; }` or
+`-keep class androidx.** { *; }` switches R8 off for that package and duplicates rules the library
+already ships. When the app is large, slow to start, or the rules file grew by copy-paste, run
+the audit in `references/keep-rules-audit.md` (merged config, blast-radius ranking, narrowing
+table, report).
+
+```proguard
+# WRONG: keeps every class and member of three libraries that ship their own consumer rules.
+-keep class com.google.firebase.** { *; }
+-keep class kotlinx.coroutines.** { *; }
+-keep class com.example.app.data.db.** { *; }
+
+# RIGHT: only what your own code loads by name, at the narrowest shape.
+-keep class * implements com.example.app.Plugin { <init>(); }
+```
 
 Before shipping, install the **minified** build and walk the critical flows: network fetch and
 decode, opening/saving persisted data, process death and restore (`adb shell am kill` while

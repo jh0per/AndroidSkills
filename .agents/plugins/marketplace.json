@@ -1,0 +1,21 @@
+{
+  "name": "android-kmp-skills",
+  "interface": {
+    "displayName": "Android & KMP Skills"
+  },
+  "plugins": [
+    {
+      "name": "android-kmp-skills",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/jh0per/AndroidSkills",
+        "ref": "main"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer Tools"
+    }
+  ]
+}

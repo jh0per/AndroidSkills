@@ -1,0 +1,262 @@
+{
+  "name": "android-kmp-skills",
+  "version": "0.2.0",
+  "description": "Opinionated, project-agnostic skills for Android and Kotlin Multiplatform app development: architecture (MVI on ViewModel or Circuit), Compose UI and Material 3, networking, persistence, media, accounts and billing, security, performance, build, CI, release and testing discipline.",
+  "author": {
+    "name": "jh0per",
+    "url": "https://github.com/jh0per"
+  },
+  "homepage": "https://github.com/jh0per/AndroidSkills",
+  "repository": "https://github.com/jh0per/AndroidSkills",
+  "license": "MIT",
+  "keywords": [
+    "android",
+    "kotlin",
+    "kotlin-multiplatform",
+    "jetpack-compose",
+    "compose-multiplatform",
+    "skills"
+  ],
+  "skills": [
+    {
+      "source": {
+        "path": "./skills/account-compliance"
+      }
+    },
+    {
+      "source": {
+        "path": "./skills/adaptive-layouts"
+      }
+    },
+    {
+      "source": {
+        "path": "./skills/analytics-feature-flags"
+      }
+    },
+    {
+      "source": {
+        "path": "./skills/android-app-security"
+      }
+    },
+    {
+      "source": {
+        "path": "./skills/android-ci-distribution"
+      }
+    },
+    {
+      "source": {
+        "path": "./skills/android-multimodule"
+      }
+    },
+    {
+      "source": {
+        "path": "./skills/android-release-signing"
+      }
+    },
+    {
+      "source": {
+        "path": "./skills/android-testing"
+      }
+    },
+    {
+      "source": {
+        "path": "./skills/app-startup-performance"
+      }
+    },
+    {
+      "source": {
+        "path": "./skills/architecture-guard-tests"
+      }
+    },
+    {
+      "source": {
+        "path": "./skills/camerax-capture"
+      }
+    },
+    {
+      "source": {
+        "path": "./skills/circuit-screen"
+      }
+    },
+    {
+      "source": {
+        "path": "./skills/compose-canvas-gestures"
+      }
+    },
+    {
+      "source": {
+        "path": "./skills/compose-mvi-viewmodel"
+      }
+    },
+    {
+      "source": {
+        "path": "./skills/compose-performance-audit"
+      }
+    },
+    {
+      "source": {
+        "path": "./skills/compose-text-input"
+      }
+    },
+    {
+      "source": {
+        "path": "./skills/compose-ui-practices"
+      }
+    },
+    {
+      "source": {
+        "path": "./skills/debug-tooling"
+      }
+    },
+    {
+      "source": {
+        "path": "./skills/design-system-module"
+      }
+    },
+    {
+      "source": {
+        "path": "./skills/device-attestation"
+      }
+    },
+    {
+      "source": {
+        "path": "./skills/edge-to-edge-insets"
+      }
+    },
+    {
+      "source": {
+        "path": "./skills/firebase-auth"
+      }
+    },
+    {
+      "source": {
+        "path": "./skills/fonts-management"
+      }
+    },
+    {
+      "source": {
+        "path": "./skills/glance-app-widgets"
+      }
+    },
+    {
+      "source": {
+        "path": "./skills/gradle-build-setup"
+      }
+    },
+    {
+      "source": {
+        "path": "./skills/gradle-quality-gate"
+      }
+    },
+    {
+      "source": {
+        "path": "./skills/image-filters-gpu"
+      }
+    },
+    {
+      "source": {
+        "path": "./skills/kmp-compose-architecture"
+      }
+    },
+    {
+      "source": {
+        "path": "./skills/kmp-ios-interop"
+      }
+    },
+    {
+      "source": {
+        "path": "./skills/ktor-api-client"
+      }
+    },
+    {
+      "source": {
+        "path": "./skills/local-persistence"
+      }
+    },
+    {
+      "source": {
+        "path": "./skills/localization"
+      }
+    },
+    {
+      "source": {
+        "path": "./skills/long-running-jobs"
+      }
+    },
+    {
+      "source": {
+        "path": "./skills/material3-guidelines"
+      }
+    },
+    {
+      "source": {
+        "path": "./skills/media-storage"
+      }
+    },
+    {
+      "source": {
+        "path": "./skills/media-video-audio"
+      }
+    },
+    {
+      "source": {
+        "path": "./skills/native-interop"
+      }
+    },
+    {
+      "source": {
+        "path": "./skills/navigation3-compose"
+      }
+    },
+    {
+      "source": {
+        "path": "./skills/oauth-browser-login"
+      }
+    },
+    {
+      "source": {
+        "path": "./skills/on-device-ml"
+      }
+    },
+    {
+      "source": {
+        "path": "./skills/paging3-compose"
+      }
+    },
+    {
+      "source": {
+        "path": "./skills/play-billing"
+      }
+    },
+    {
+      "source": {
+        "path": "./skills/predictive-back"
+      }
+    },
+    {
+      "source": {
+        "path": "./skills/push-notifications"
+      }
+    },
+    {
+      "source": {
+        "path": "./skills/runtime-permissions"
+      }
+    },
+    {
+      "source": {
+        "path": "./skills/unsaved-changes-recovery"
+      }
+    },
+    {
+      "source": {
+        "path": "./skills/verification-discipline"
+      }
+    },
+    {
+      "source": {
+        "path": "./skills/views-compose-interop"
+      }
+    }
+  ]
+}
