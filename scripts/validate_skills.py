@@ -1,18 +1,21 @@
 #!/usr/bin/env python3
-"""Validate every skills/*/SKILL.md and keep .claude-plugin/plugin.json in sync.
+"""Validate every skills/*/SKILL.md and keep the Claude and Codex plugin manifests in sync.
 
 Usage:
   python3 scripts/validate_skills.py          # validate, exit 1 on problems
-  python3 scripts/validate_skills.py --fix    # also rewrite the plugin manifest skill list
+  python3 scripts/validate_skills.py --fix    # also rewrite the plugin manifests (skill list, Codex version)
 
 Checks (mirroring the agent-skills spec and the conventions in CONTRIBUTING.md):
-  - frontmatter present, `name` equals the folder name, lowercase-hyphenated, <= 64 chars
+  - frontmatter present and valid YAML (when PyYAML is installed; CI installs it), since Codex
+    parses it strictly and skips skills whose frontmatter fails to load
+  - `name` equals the folder name, lowercase-hyphenated, <= 64 chars
   - `description` present, <= 1024 chars, says when to use the skill ("Use when" / "Use this skill")
   - `metadata.last-updated` is an ISO date and `metadata.keywords` is a non-empty list
   - relative markdown links and `references/...` mentions resolve to files
   - SKILL.md body stays under 300 lines (move depth into references/)
-  - every skill folder is listed in .claude-plugin/plugin.json and .codex-plugin/plugin.json,
-    and the two manifests carry the same version
+  - every skill folder is listed in .claude-plugin/plugin.json; .codex-plugin/plugin.json points
+    `skills` at ./skills/ and carries the same name and version
+  - .agents/plugins/marketplace.json lists the plugin with a source, policy and category
   - README.md links every skill
 """
 from __future__ import annotations
@@ -22,10 +25,17 @@ import pathlib
 import re
 import sys
 
+try:
+    import yaml
+except ImportError:  # optional locally; CI installs it
+    yaml = None
+
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 SKILLS = ROOT / "skills"
 MANIFEST = ROOT / ".claude-plugin" / "plugin.json"
 CODEX_MANIFEST = ROOT / ".codex-plugin" / "plugin.json"
+CODEX_MARKETPLACE = ROOT / ".agents" / "plugins" / "marketplace.json"
+CODEX_SKILLS_PATH = "./skills/"
 README = ROOT / "README.md"
 MAX_BODY_LINES = 300
 
@@ -93,6 +103,17 @@ def check_skill(folder: pathlib.Path, problems: list[str]) -> None:
     if fm is None:
         problems.append(f"{rel}: missing YAML frontmatter")
         return
+    if yaml is not None:
+        raw = text[4:text.find("\n---\n", 4)]
+        try:
+            strict = yaml.safe_load(raw)
+        except yaml.YAMLError as e:
+            problems.append(f"{rel}: frontmatter is not valid YAML ({str(e).splitlines()[0]})")
+        else:
+            if not isinstance(strict, dict) or not all(
+                isinstance(strict.get(k), str) for k in ("name", "description")
+            ):
+                problems.append(f"{rel}: frontmatter `name` and `description` must be plain strings")
     name = fm.get("name")
     if name != folder.name:
         problems.append(f"{rel}: name '{name}' != folder '{folder.name}'")
@@ -150,22 +171,52 @@ def main(argv: list[str]) -> int:
             )
 
     codex = json.loads(CODEX_MANIFEST.read_text(encoding="utf-8")) if CODEX_MANIFEST.exists() else None
-    codex_expected = [{"source": {"path": p}} for p in expected]
     if codex is None:
         problems.append(f"{CODEX_MANIFEST.relative_to(ROOT)}: missing")
     else:
+        name = (manifest or {}).get("name")
         version = (manifest or {}).get("version")
-        if codex.get("skills") != codex_expected or codex.get("version") != version:
+        if codex.get("skills") != CODEX_SKILLS_PATH or codex.get("version") != version:
             if fix:
-                codex["skills"] = codex_expected
+                codex["skills"] = CODEX_SKILLS_PATH
                 codex["version"] = version
                 CODEX_MANIFEST.write_text(json.dumps(codex, indent=2) + "\n", encoding="utf-8")
-                print(f"updated {CODEX_MANIFEST.relative_to(ROOT)} ({len(expected)} skills)")
+                print(f"updated {CODEX_MANIFEST.relative_to(ROOT)}")
             else:
                 problems.append(
-                    f"{CODEX_MANIFEST.relative_to(ROOT)}: skills list or version out of date; "
-                    "run scripts/validate_skills.py --fix"
+                    f"{CODEX_MANIFEST.relative_to(ROOT)}: `skills` must be \"{CODEX_SKILLS_PATH}\" and "
+                    "version must match .claude-plugin/plugin.json; run scripts/validate_skills.py --fix"
                 )
+        if codex.get("name") != name:
+            problems.append(f"{CODEX_MANIFEST.relative_to(ROOT)}: name '{codex.get('name')}' != '{name}'")
+        if not (codex.get("description") and (codex.get("author") or {}).get("name")):
+            problems.append(f"{CODEX_MANIFEST.relative_to(ROOT)}: needs description and author.name")
+        prompts = (codex.get("interface") or {}).get("defaultPrompt", [])
+        if len(prompts) > 3 or any(len(p) > 128 for p in prompts):
+            problems.append(f"{CODEX_MANIFEST.relative_to(ROOT)}: interface.defaultPrompt is at most 3 x 128 chars")
+
+        market = (
+            json.loads(CODEX_MARKETPLACE.read_text(encoding="utf-8")) if CODEX_MARKETPLACE.exists() else None
+        )
+        mrel = CODEX_MARKETPLACE.relative_to(ROOT)
+        entry = next((p for p in (market or {}).get("plugins", []) if p.get("name") == codex.get("name")), None)
+        if market is None:
+            problems.append(f"{mrel}: missing")
+        elif entry is None:
+            problems.append(f"{mrel}: no plugin entry named '{codex.get('name')}'")
+        else:
+            source = entry.get("source") or {}
+            if source.get("source") == "local" and not (ROOT / source.get("path", "")).joinpath(
+                ".codex-plugin", "plugin.json"
+            ).exists():
+                problems.append(f"{mrel}: local source path does not contain .codex-plugin/plugin.json")
+            policy = entry.get("policy") or {}
+            if policy.get("installation") not in ("AVAILABLE", "INSTALLED_BY_DEFAULT", "NOT_AVAILABLE"):
+                problems.append(f"{mrel}: policy.installation must be AVAILABLE, INSTALLED_BY_DEFAULT or NOT_AVAILABLE")
+            if policy.get("authentication") not in ("ON_INSTALL", "ON_USE"):
+                problems.append(f"{mrel}: policy.authentication must be ON_INSTALL or ON_USE")
+            if not entry.get("category"):
+                problems.append(f"{mrel}: plugin entry needs a category")
 
     readme = README.read_text(encoding="utf-8") if README.exists() else ""
     for folder in folders:

@@ -11,7 +11,9 @@ skills/<name>/
 
 - `<name>` is lowercase-hyphenated, at most 64 characters, and equals `name` in the frontmatter.
 - Run `python3 scripts/validate_skills.py --fix` before committing. It checks the rules below and
-  rewrites the skill list in `.claude-plugin/plugin.json` and `.codex-plugin/plugin.json`. CI runs the same script.
+  rewrites the skill list in `.claude-plugin/plugin.json` and keeps `.codex-plugin/plugin.json`
+  (which points at `./skills/`) on the same version. With PyYAML installed it also parses the
+  frontmatter as strict YAML, the way Codex does; CI installs it and runs the same script.
 
 ## Frontmatter
 

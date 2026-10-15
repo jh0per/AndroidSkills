@@ -25,7 +25,9 @@ jobs:
           python-version: "3.12"
 
       - name: Validate skills
-        run: python3 scripts/validate_skills.py
+        run: |
+          pip install pyyaml
+          python3 scripts/validate_skills.py
 
       - name: Set plugin version from tag
         env:
@@ -74,7 +76,9 @@ jobs:
               ls -d skills/*/ | xargs -n1 basename | sed 's/^/- /'
             fi
             echo
-            echo "Install: \`/plugin marketplace add jh0per/AndroidSkills\` then \`/plugin install android-kmp-skills@android-kmp-skills\`."
+            echo "Install in Claude Code: \`/plugin marketplace add jh0per/AndroidSkills\` then \`/plugin install android-kmp-skills@android-kmp-skills\`."
+            echo
+            echo "Install in Codex: \`codex plugin marketplace add jh0per/AndroidSkills\` then \`codex plugin add android-kmp-skills@android-kmp-skills\` (or pick it in \`/plugins\`)."
           } > notes.md
 
       - name: Create GitHub release
