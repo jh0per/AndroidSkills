@@ -16,3 +16,17 @@ jobs:
       - run: pip install pyyaml
       - name: Validate SKILL.md files and plugin manifests
         run: python3 scripts/validate_skills.py
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+      - name: Smoke-test the installer CLI
+        run: |
+          export HOME="$RUNNER_TEMP/home"
+          mkdir -p "$HOME/.claude" "$HOME/.codex"
+          node bin/android-skills.mjs list > /dev/null
+          node bin/android-skills.mjs add --all
+          test "$(ls "$HOME/.claude/skills" | wc -l)" -eq "$(ls -d skills/*/ | wc -l)"
+          test "$(ls "$HOME/.agents/skills" | wc -l)" -eq "$(ls -d skills/*/ | wc -l)"
+          node bin/android-skills.mjs update
+          node bin/android-skills.mjs remove --all --agent=codex
+          test -z "$(ls "$HOME/.agents/skills")"

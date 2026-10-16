@@ -15,6 +15,9 @@ skills/<name>/
   (which points at `./skills/`) on the same version. With PyYAML installed it also parses the
   frontmatter as strict YAML, the way Codex does; CI installs it and runs the same script.
 
+`bin/android-skills.mjs` (the `npx` installer) copies whatever is in `skills/`, so a new skill
+needs no installer change. The validator keeps `package.json` on the plugin version.
+
 ## Frontmatter
 
 ```yaml
@@ -64,7 +67,7 @@ component registries, API origins). Those belong in the project's `CLAUDE.md`.
 ## Releasing
 
 Run the **Release** workflow (Actions → Release → Run workflow) with a tag such as `v0.3.0`. It
-validates the skills, writes the version into both plugin manifests, commits and tags
+validates the skills, writes the version into both plugin manifests and `package.json`, commits and tags
 `main`, and publishes a GitHub release with a zip of the skills and a list of skills changed since
 the previous tag. Plugin installs pin to the manifest version, so every change people should
 receive needs a release.

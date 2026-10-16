@@ -15,6 +15,7 @@ Checks (mirroring the agent-skills spec and the conventions in CONTRIBUTING.md):
   - SKILL.md body stays under 300 lines (move depth into references/)
   - every skill folder is listed in .claude-plugin/plugin.json; .codex-plugin/plugin.json points
     `skills` at ./skills/ and carries the same name and version
+  - package.json (the installer CLI) carries the same name and version
   - .agents/plugins/marketplace.json lists the plugin with a source, policy and category
   - README.md links every skill
 """
@@ -36,6 +37,7 @@ MANIFEST = ROOT / ".claude-plugin" / "plugin.json"
 CODEX_MANIFEST = ROOT / ".codex-plugin" / "plugin.json"
 CODEX_MARKETPLACE = ROOT / ".agents" / "plugins" / "marketplace.json"
 CODEX_SKILLS_PATH = "./skills/"
+PACKAGE = ROOT / "package.json"
 README = ROOT / "README.md"
 MAX_BODY_LINES = 300
 
@@ -217,6 +219,17 @@ def main(argv: list[str]) -> int:
                 problems.append(f"{mrel}: policy.authentication must be ON_INSTALL or ON_USE")
             if not entry.get("category"):
                 problems.append(f"{mrel}: plugin entry needs a category")
+
+    package = json.loads(PACKAGE.read_text(encoding="utf-8")) if PACKAGE.exists() else None
+    if package is None:
+        problems.append("package.json: missing")
+    elif package.get("version") != (manifest or {}).get("version"):
+        if fix:
+            package["version"] = (manifest or {}).get("version")
+            PACKAGE.write_text(json.dumps(package, indent=2) + "\n", encoding="utf-8")
+            print("updated package.json")
+        else:
+            problems.append("package.json: version out of date; run scripts/validate_skills.py --fix")
 
     readme = README.read_text(encoding="utf-8") if README.exists() else ""
     for folder in folders:

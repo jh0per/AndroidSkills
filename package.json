@@ -1,0 +1,23 @@
+{
+  "name": "android-kmp-skills",
+  "version": "0.2.0",
+  "description": "Install opinionated Android and Kotlin Multiplatform skills into Claude Code, Codex, Gemini CLI and Antigravity.",
+  "license": "MIT",
+  "author": "jh0per",
+  "homepage": "https://github.com/jh0per/AndroidSkills",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jh0per/AndroidSkills.git"
+  },
+  "type": "module",
+  "bin": {
+    "android-skills": "bin/android-skills.mjs"
+  },
+  "files": [
+    "bin",
+    "skills"
+  ],
+  "engines": {
+    "node": ">=18"
+  }
+}

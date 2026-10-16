@@ -42,7 +42,7 @@ jobs:
           fi
           VERSION="${TAG_NAME#v}" python3 - <<'PY'
           import json, os, pathlib
-          for name in (".claude-plugin/plugin.json", ".codex-plugin/plugin.json"):
+          for name in (".claude-plugin/plugin.json", ".codex-plugin/plugin.json", "package.json"):
               p = pathlib.Path(name)
               data = json.loads(p.read_text())
               data["version"] = os.environ["VERSION"]
@@ -55,7 +55,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add .claude-plugin/plugin.json .codex-plugin/plugin.json
+          git add .claude-plugin/plugin.json .codex-plugin/plugin.json package.json
           git commit -m "Release $TAG_NAME" || echo "version already set"
           git tag -a "$TAG_NAME" -m "Release $TAG_NAME"
           git push origin main "$TAG_NAME"
@@ -77,6 +77,8 @@ jobs:
             fi
             echo
             echo "Install in Claude Code: \`/plugin marketplace add jh0per/AndroidSkills\` then \`/plugin install android-kmp-skills@android-kmp-skills\`."
+            echo
+            echo "Any agent: \`npx github:jh0per/AndroidSkills#$TAG_NAME add --all\`."
             echo
             echo "Install in Codex: \`codex plugin marketplace add jh0per/AndroidSkills\` then \`codex plugin add android-kmp-skills@android-kmp-skills\` (or pick it in \`/plugins\`)."
           } > notes.md
