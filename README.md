@@ -85,6 +85,31 @@ Nothing here requires Circuit. The shared skills assume ViewModel + Navigation C
 
 Code samples use `com.example.app` and `App*` names. Replace them with your own package and prefix.
 
+## Install with one command
+
+The repo is also a small CLI. With Node 18+ you can run it straight from GitHub, nothing to
+publish or install first:
+
+```bash
+npx github:jh0per/AndroidSkills list                                  # what is available
+npx github:jh0per/AndroidSkills add compose-mvi-viewmodel runtime-permissions
+npx github:jh0per/AndroidSkills add --all                             # every skill
+npx github:jh0per/AndroidSkills update                                # refresh what you installed
+npx github:jh0per/AndroidSkills remove runtime-permissions
+npx github:jh0per/AndroidSkills list --installed
+```
+
+- `--agent=claude,codex,gemini,antigravity` picks the agents. Without it the CLI installs for
+  every agent it finds in your home directory.
+- `--project=PATH` installs into a project (`.claude/skills`, `.agents/skills`, `.gemini/skills`,
+  `.agent/skills`) so the team gets the skills from git. Without it skills go to your user-level
+  folders (`~/.claude/skills`, `~/.agents/skills`, `~/.gemini/skills`,
+  `~/.gemini/antigravity/skills`).
+- Pin a release with `npx github:jh0per/AndroidSkills#v0.3.0 add --all`.
+- `update` and `remove` only touch skills this CLI installed, and `add` will not overwrite a
+  same-named skill of yours unless you pass `--force`. Rename a skill you customise, otherwise
+  `update` replaces it.
+
 ## Plug into a project
 
 ### Claude Code
