@@ -1,7 +1,7 @@
 # Android Skills
 
-Reusable [Claude skills](https://docs.claude.com/en/docs/claude-code/skills) for Android and Kotlin
-Multiplatform development. Each skill is a folder with a `SKILL.md` (YAML frontmatter `name` +
+Reusable agent skills for Android and Kotlin Multiplatform development, packaged for Claude Code
+and OpenAI Codex. Each skill is a folder with a `SKILL.md` (YAML frontmatter `name` +
 `description`, then instructions) and optional supporting files. The agent loads a skill when its
 description matches the task.
 
@@ -85,7 +85,34 @@ Nothing here requires Circuit. The shared skills assume ViewModel + Navigation C
 
 Code samples use `com.example.app` and `App*` names. Replace them with your own package and prefix.
 
+## Install with one command
+
+The repo is also a small CLI. With Node 18+ you can run it straight from GitHub, nothing to
+publish or install first:
+
+```bash
+npx github:jh0per/AndroidSkills list                                  # what is available
+npx github:jh0per/AndroidSkills add compose-mvi-viewmodel runtime-permissions
+npx github:jh0per/AndroidSkills add --all                             # every skill
+npx github:jh0per/AndroidSkills update                                # refresh what you installed
+npx github:jh0per/AndroidSkills remove runtime-permissions
+npx github:jh0per/AndroidSkills list --installed
+```
+
+- `--agent=claude,codex,gemini,antigravity` picks the agents. Without it the CLI installs for
+  every agent it finds in your home directory.
+- `--project=PATH` installs into a project (`.claude/skills`, `.agents/skills`, `.gemini/skills`,
+  `.agent/skills`) so the team gets the skills from git. Without it skills go to your user-level
+  folders (`~/.claude/skills`, `~/.agents/skills`, `~/.gemini/skills`,
+  `~/.gemini/antigravity/skills`).
+- Pin a release with `npx github:jh0per/AndroidSkills#v0.3.0 add --all`.
+- `update` and `remove` only touch skills this CLI installed, and `add` will not overwrite a
+  same-named skill of yours unless you pass `--force`. Rename a skill you customise, otherwise
+  `update` replaces it.
+
 ## Plug into a project
+
+### Claude Code
 
 **As a Claude Code plugin (recommended):**
 
@@ -119,15 +146,42 @@ mkdir -p ~/.claude/skills
 ln -s ~/AndroidSkills/skills/* ~/.claude/skills/
 ```
 
-**Other agents:** the repo also ships `.codex-plugin/plugin.json` and an
-`.agents/plugins/marketplace.json` marketplace entry, so agents that install plugins from those
-manifests (Codex and compatible tools) can add it from `jh0per/AndroidSkills` directly. Agents
-that only read the `SKILL.md` format can point at the same folders (for example `.agents/skills/`).
+### Codex
+
+**As a Codex plugin (recommended):**
+
+```bash
+codex plugin marketplace add jh0per/AndroidSkills
+codex plugin add android-kmp-skills@android-kmp-skills
+```
+
+You can also run `/plugins` inside Codex and install **Android & KMP Skills** from the
+`android-kmp-skills` marketplace. Start a new session afterwards so the skills are picked up.
+Update later with `codex plugin marketplace upgrade`.
+
+**Without the plugin**, Codex reads skills from `.agents/skills/` (in the repository, from the
+working directory up to the repo root) and from `~/.agents/skills/` (every project), and it
+follows symlinks:
+
+```bash
+git clone https://github.com/jh0per/AndroidSkills.git ~/AndroidSkills
+
+# every project on your machine
+mkdir -p ~/.agents/skills
+ln -s ~/AndroidSkills/skills/* ~/.agents/skills/
+
+# or one project, shared with the team
+mkdir -p .agents/skills
+cp -R ~/AndroidSkills/skills/* .agents/skills/          # or pick only the ones you need
+```
+
+Codex picks a skill when the task matches its description. To call one explicitly, type `$` and
+the skill name (for example `$runtime-permissions`) or browse them with `/skills`.
 
 ## Make them yours
 
 - Put project-specific facts (package names, component registry, API origin, commands) in the
-  project's own `CLAUDE.md`/`AGENTS.md`; keep these skills generic.
+  project's own `CLAUDE.md` (Claude Code) or `AGENTS.md` (Codex); keep these skills generic.
 - When a skill disagrees with a decision your project made deliberately, record the decision in the
   project docs; the project wins.
 
