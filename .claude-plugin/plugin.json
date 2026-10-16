@@ -26,6 +26,7 @@
     "./skills/android-ci-distribution",
     "./skills/android-multimodule",
     "./skills/android-release-signing",
+    "./skills/android-tdd",
     "./skills/android-testing",
     "./skills/app-startup-performance",
     "./skills/architecture-guard-tests",
@@ -64,6 +65,8 @@
     "./skills/predictive-back",
     "./skills/push-notifications",
     "./skills/runtime-permissions",
+    "./skills/spec-driven-development",
+    "./skills/spec-kit-workflow",
     "./skills/unsaved-changes-recovery",
     "./skills/verification-discipline",
     "./skills/views-compose-interop"
