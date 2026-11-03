@@ -125,29 +125,29 @@ class PickedUploadHolder : DataHolder<PickedUpload?>(null)   // registered as a 
 
 Holders are process memory: anything that must survive process death also goes to persistence.
 
-## Embedding an internal library (e.g. a chat or support SDK)
+## Embedding an internal library (e.g. a support or messaging SDK)
 
 The library exposes a small API and receives host data through an interface:
 
 ```kotlin
 // library
-interface ChatSdkDependencies {
-    fun currentUser(): Flow<ChatUser?>
-    fun theme(): ChatTheme                        // host tokens mapped to the library's theme
-    fun initialState(): ChatState?                // restore after recreation
+interface SupportSdkDependencies {
+    fun currentUser(): Flow<SupportUser?>
+    fun theme(): SupportTheme                     // host tokens mapped to the library's theme
+    fun initialState(): SupportState?             // restore after recreation
 }
 
-class ChatMessenger {                            // host ⇄ library without the library knowing host features
-    private val _events = MutableSharedFlow<ChatEvent>(extraBufferCapacity = 16)
-    val events: SharedFlow<ChatEvent> = _events.asSharedFlow()
-    internal var dispatch: ((ChatAction) -> Unit)? = null
-    fun send(action: ChatAction) { dispatch?.invoke(action) }        // host → library
-    internal fun emit(event: ChatEvent) { _events.tryEmit(event) }   // library → host
+class SupportMessenger {                         // host ⇄ library without the library knowing host features
+    private val _events = MutableSharedFlow<SupportEvent>(extraBufferCapacity = 16)
+    val events: SharedFlow<SupportEvent> = _events.asSharedFlow()
+    internal var dispatch: ((SupportAction) -> Unit)? = null
+    fun send(action: SupportAction) { dispatch?.invoke(action) }        // host → library
+    internal fun emit(event: SupportEvent) { _events.tryEmit(event) }   // library → host
 }
-sealed interface ChatEvent {
-    data class OpenOrderRequested(val orderId: String) : ChatEvent       // the host owns the orders feature
-    data class ShowError(val error: Throwable) : ChatEvent
-    data object BackClicked : ChatEvent
+sealed interface SupportEvent {
+    data class OpenOrderRequested(val orderId: String) : SupportEvent    // the host owns the orders feature
+    data class ShowError(val error: Throwable) : SupportEvent
+    data object BackClicked : SupportEvent
 }
 ```
 
@@ -163,11 +163,11 @@ sealed interface ChatEvent {
 
 ```kotlin
 // settings.gradle.kts
-include(":chat")
-project(":chat").projectDir = file("libs/chat/chat")
-include(":chat:models")                           // nested path resolves inside libs/chat/chat/models
-include(":chat-sample")
-project(":chat-sample").projectDir = file("libs/chat/app")
+include(":support")
+project(":support").projectDir = file("libs/support-sdk/library")
+include(":support:models")                        // nested path resolves inside libs/support-sdk/library/models
+include(":support-sample")
+project(":support-sample").projectDir = file("libs/support-sdk/sample")
 ```
 
 - The submodule's own `libs.versions.toml`/build logic is ignored by the host; keep versions in

@@ -114,7 +114,7 @@ dedicated drawing loop; never touch GL from another thread.
 
 ## Filters shared across platforms
 
-When the same look must match on a server, web and Android:
+When the same look must match on several platforms (for example Android, iOS and a backend renderer):
 
 - Compile per-pixel operations into a **3D colour cube (LUT)** with one shared implementation
   per runtime, and apply spatial effects (vignette, grain) as separate passes.
