@@ -61,8 +61,9 @@ component registries, API origins). Those belong in the project's `CLAUDE.md`.
 
 ## Releasing
 
-Run the **Release** workflow (Actions → Release → Run workflow) with a tag such as `v0.3.0`. It
-validates the skills, writes the version into both plugin manifests, commits and tags
-`main`, and publishes a GitHub release with a zip of the skills and a list of skills changed since
-the previous tag. Plugin installs pin to the manifest version, so every change people should
-receive needs a release.
+Either push a `v1.2.3` tag after bumping `version` in both plugin manifests, or run the **Release**
+workflow (Actions → Release → Run workflow) with a tag such as `v0.3.0`, which bumps the manifests,
+commits and tags `main` for you. Both paths validate the skills and publish a GitHub release with a
+zip of the skills, a list of skills changed since the previous tag, and generated notes. Plugin
+installs pin to the manifest version, so every change people should receive needs a release. Full
+steps are in the [README](README.md#releasing).

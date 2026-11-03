@@ -131,6 +131,32 @@ that only read the `SKILL.md` format can point at the same folders (for example 
 - When a skill disagrees with a decision your project made deliberately, record the decision in the
   project docs; the project wins.
 
+## Releasing
+
+Releases are built by [`.github/workflows/release.yml`](.github/workflows/release.yml). Each one
+validates the skills, zips `skills/` with the plugin manifests, and publishes a GitHub Release whose
+notes list the skills changed since the previous tag, followed by GitHub's generated notes (merged
+PRs and contributors). Use a `vMAJOR.MINOR.PATCH` tag.
+
+**From a tag:**
+
+1. Set the same `version` (without the `v`) in `.claude-plugin/plugin.json` and
+   `.codex-plugin/plugin.json`, and merge that to `main`.
+2. Tag and push:
+
+   ```bash
+   git checkout main && git pull
+   git tag -a v0.3.0 -m "Release v0.3.0"
+   git push origin v0.3.0
+   ```
+
+The run fails before publishing if the manifests do not match the tag.
+
+**From the Actions tab:** Actions → Release → Run workflow, enter the tag (e.g. `v0.3.0`). This
+writes the version into both manifests, commits and tags `main` for you, then publishes.
+
+Plugin installs pin to the manifest version, so every change people should receive needs a release.
+
 ## Contributing
 
 See [CONTRIBUTING.md](CONTRIBUTING.md): one folder per skill, frontmatter with `name`,
