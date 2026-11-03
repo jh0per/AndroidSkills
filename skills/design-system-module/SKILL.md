@@ -159,7 +159,7 @@ annotation class AppPreviews
 
 If a library module has its own theme object, build it from host tokens once and provide it via
 the library's `CompositionLocal`/parameter, so the library never hard-codes colours:
-`ChatTheme(colors = ChatColors(accent = scheme.primary, …), typography = ChatTypography(body = AppTypography.bodyMedium, …))`.
+`SupportTheme(colors = SupportColors(accent = scheme.primary, …), typography = SupportTypography(body = AppTypography.bodyMedium, …))`.
 
 ## System bars
 
