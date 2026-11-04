@@ -55,6 +55,11 @@
     },
     {
       "source": {
+        "path": "./skills/android-tdd"
+      }
+    },
+    {
+      "source": {
         "path": "./skills/android-testing"
       }
     },
@@ -241,6 +246,16 @@
     {
       "source": {
         "path": "./skills/runtime-permissions"
+      }
+    },
+    {
+      "source": {
+        "path": "./skills/spec-driven-development"
+      }
+    },
+    {
+      "source": {
+        "path": "./skills/spec-kit-workflow"
       }
     },
     {

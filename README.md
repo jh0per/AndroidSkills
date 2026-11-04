@@ -83,6 +83,14 @@ Nothing here requires Circuit. The shared skills assume ViewModel + Navigation C
 | [debug-tooling](skills/debug-tooling/SKILL.md) | HTTP inspector, logging, hidden debug menu, mock overrides, StrictMode, keeping release clean |
 | [verification-discipline](skills/verification-discipline/SKILL.md) | Making gates fail first, probe controls, printing wire bytes, honest reporting |
 
+### Workflow
+
+| Skill | Use it for |
+|---|---|
+| [spec-driven-development](skills/spec-driven-development/SKILL.md) | Spec before code: prioritised user stories, Given/When/Then scenarios, Android edge-case table, clarifications, plan and vertical task list, tracing every requirement to a test |
+| [spec-kit-workflow](skills/spec-kit-workflow/SKILL.md) | Spec Kit CLI on a Gradle repo: init for Claude Code or Codex, Android/KMP constitution, plan/tasks template overrides, constitution → specify → plan → tasks → implement → converge |
+| [android-tdd](skills/android-tdd/SKILL.md) | Red-green-refactor with fast Gradle test commands, lowest-layer choice, seams for time and dispatchers, fakes with contract suites, regression-first bug fixes, characterisation tests |
+
 Code samples use `com.example.app` and `App*` names. Replace them with your own package and prefix.
 
 ## Plug into a project

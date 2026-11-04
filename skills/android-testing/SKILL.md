@@ -16,6 +16,8 @@ metadata:
 
 # Android testing
 
+This skill is the test machinery. The test-first loop that uses it is `android-tdd`.
+
 ## Pyramid
 
 | Layer | Where | What |
