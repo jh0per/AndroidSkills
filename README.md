@@ -45,7 +45,7 @@ Nothing here requires Circuit. The shared skills assume ViewModel + Navigation C
 | Skill | Use it for |
 |---|---|
 | [ktor-api-client](skills/ktor-api-client/SKILL.md) | Ktor client, origin-scoped bearer, refresh-once, one error mapper, connectivity, MockEngine tests |
-| [local-persistence](skills/local-persistence/SKILL.md) | Room KMP, DataStore over a path provider, on-disk contracts, migrations, local-first sync |
+| [local-persistence](skills/local-persistence/SKILL.md) | Room 3 for KMP (with the Room 2.x differences), DataStore over a path provider, on-disk contracts, migrations and their tests, local-first sync |
 | [long-running-jobs](skills/long-running-jobs/SKILL.md) | Upload validation, presigned uploads, job polling with backoff, push fallback, one-shot hand-off |
 | [unsaved-changes-recovery](skills/unsaved-changes-recovery/SKILL.md) | Dirty baseline, back handling, Save/Discard/Cancel, autosave, crash recovery, transactions |
 | [media-storage](skills/media-storage/SKILL.md) | MediaStore saves, sharing, pickers and capture, bounded decoding, Coil, WorkManager uploads |

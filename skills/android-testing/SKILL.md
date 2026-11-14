@@ -2,7 +2,7 @@
 name: android-testing
 description: Testing Android and KMP apps - coroutine test dispatchers and virtual time, Turbine tests for ViewModels and other state holders, Ktor MockEngine, hand-written fakes, Compose instrumented tests with real platform seams, screenshot capture with contrast assertions, touch-target and multi-touch tests, locale-aware runners, and triaging a whole suite failing on one device. Use when writing or fixing tests, chasing a flaky test, or adding UI verification.
 metadata:
-  last-updated: '2026-10-15'
+  last-updated: '2026-11-14'
   keywords:
   - testing
   - coroutines test
@@ -230,7 +230,10 @@ class OrdersDaoTest {
 ```
 
 - `testOptions { unitTests.isIncludeAndroidResources = true }` for Robolectric resources.
-- Migration tests: `MigrationTestHelper` against the exported schemas, one test per migration.
+- The example above is the Room 2.x Android form. With Room 3 a DAO test needs no Robolectric:
+  it runs in `commonTest` against an in-memory database with the bundled driver (`local-persistence`).
+- Migration tests: `MigrationTestHelper` against the exported schemas, one test per migration;
+  `local-persistence` says where that test can live with Room 3.
 - A dispatcher rule that also exposes a `DispatcherProvider` returning the test dispatcher, injected
   into the class under test; never call `Dispatchers.setMain` in both the rule and `@Before`.
 - Organise slow suites (Robolectric, serialization corpora) so they can be run separately, but keep
