@@ -1,8 +1,8 @@
 ---
 name: android-tdd
-description: Test-driven development for Android and KMP - the red-green-refactor loop with Gradle commands that run one test fast, a test list written from acceptance scenarios, picking the lowest layer that can observe the behaviour (pure Kotlin, ViewModel with Turbine, repository with fakes and MockEngine, Room/Robolectric, Compose UI with runComposeUiTest or createComposeRule, instrumented only for platform APIs), seams for time, dispatchers and IDs, fakes with shared contract tests instead of mocks, regression-test-first bug fixes and characterisation tests for legacy code. Use when implementing a feature or fix test-first, when asked for TDD or red-green-refactor, when a task says "test first", or when code is hard to test. Do not use for test infrastructure details such as dispatchers rules, screenshot contrast checks or device triage (see android-testing) or for writing the spec (see spec-driven-development).
+description: Test-driven development for Android and KMP - the red-green-refactor loop with Gradle commands that run one test fast, a test list written from acceptance scenarios, picking the lowest layer that can observe the behaviour (pure Kotlin, ViewModel with Turbine, repository with fakes and MockEngine, Room DAOs on real SQLite, Compose UI with runComposeUiTest or createComposeRule, instrumented only for platform APIs), seams for time, dispatchers and IDs, fakes with shared contract tests instead of mocks, regression-test-first bug fixes and characterisation tests for legacy code. Use when implementing a feature or fix test-first, when asked for TDD or red-green-refactor, when a task says "test first", or when code is hard to test. Do not use for test infrastructure details such as dispatchers rules, screenshot contrast checks or device triage (see android-testing) or for writing the spec (see spec-driven-development).
 metadata:
-  last-updated: '2026-10-16'
+  last-updated: '2026-11-15'
   keywords:
   - TDD
   - test-driven development
@@ -66,7 +66,7 @@ Commit at green. Small commits make "which change broke it" a one-step question.
 | Rules, mapping, validation, formatting, reducers | plain Kotlin test | `commonTest` / `test` |
 | Screen behaviour: intents → state/effects, loading, errors, offline | ViewModel/state-holder + fakes + Turbine | `commonTest` / `test` |
 | Network contract, error mapping, retry/refresh | repository/client + Ktor `MockEngine` | `commonTest` |
-| SQL, migrations, DataStore keys | Room in-memory / Robolectric | `androidUnitTest` / `test` |
+| SQL, migrations, DataStore keys | Room 3 in-memory database with the bundled driver; migrations with `MigrationTestHelper` where `local-persistence` says it runs (Room 2.x on Android: Robolectric) | `commonTest`; migrations `iosTest` or `androidTest` |
 | What is shown, enabled, announced; clicks call the right intent | stateless `XUi(state, onIntent)` UI test | `commonTest` (KMP) or `androidUnitTest` with Robolectric, else `androidTest` |
 | Permissions, camera, notifications, real IME, multi-window | instrumented on a device | `androidInstrumentedTest` / `androidTest` |
 
@@ -186,7 +186,7 @@ Why: interaction tests break on every refactor and pass when the result is wrong
 ```
 Test list: 7 (5 done, 2 deferred: see spec Clarifications)
 Red seen:  7/7 (assertion failures, not compile errors)
-Layer:     5 commonTest, 1 androidUnitTest (Room migration), 1 instrumented (camera hand-off)
+Layer:     5 commonTest, 1 iosTest (Room migration), 1 instrumented (camera hand-off)
 Commands:  ./gradlew :feature:orders:allTests PASS · ./gradlew verify PASS · iosSimulatorArm64Test NOT_RUN (no macOS)
 Seams added: Clock, AppDispatchers in OrdersViewModel
 ```
