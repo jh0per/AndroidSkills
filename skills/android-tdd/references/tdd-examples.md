@@ -106,16 +106,20 @@ real rendering matters. Text from resources, not literals, if the suite runs in 
 }
 ```
 
-## Room migration (Android host test)
+## Room DAO (commonTest, Room 3)
 
 ```kotlin
-@Test fun `migrate 3 to 4 keeps orders and adds status default`() {
-    helper.createDatabase(DB, 3).use { it.execSQL("INSERT INTO orders(id, title) VALUES ('1', 'A')") }
-    helper.runMigrationsAndValidate(DB, 4, true, MIGRATION_3_4).use { db ->
-        db.query("SELECT status FROM orders WHERE id = '1'").use { c -> c.moveToFirst(); assertEquals("NEW", c.getString(0)) }
-    }
+@Test fun `cancelled orders are hidden from the active list`() = runTest {
+    val db = Room.inMemoryDatabaseBuilder<AppDatabase>().setDriver(BundledSQLiteDriver()).build()
+    try {
+        db.orderDao().upsert(order("1", status = "NEW")); db.orderDao().upsert(order("2", status = "CANCELLED"))
+        assertEquals(listOf("1"), db.orderDao().observeActive().first().map { it.id })
+    } finally { db.close() }
 }
 ```
+
+Migration tests (`MigrationTestHelper`, where each platform can run it, red-first check) are in
+`local-persistence`.
 
 ## Characterisation test before touching legacy code
 
