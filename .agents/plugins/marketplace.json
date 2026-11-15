@@ -7,9 +7,8 @@
     {
       "name": "android-kmp-skills",
       "source": {
-        "source": "url",
-        "url": "https://github.com/jh0per/AndroidSkills",
-        "ref": "main"
+        "source": "local",
+        "path": "./"
       },
       "policy": {
         "installation": "AVAILABLE",
