@@ -17,7 +17,7 @@ Nothing here requires Circuit. The shared skills assume ViewModel + Navigation C
 | [kmp-compose-architecture](skills/kmp-compose-architecture/SKILL.md) | Package layout, layer boundaries, platform seams without expect/actual, Koin wiring; works with or without Circuit |
 | [android-multimodule](skills/android-multimodule/SKILL.md) | Module graph, routes module, per-service network modules, dependency inversion at module edges, embedding a library |
 | [compose-mvi-viewmodel](skills/compose-mvi-viewmodel/SKILL.md) | Default screen pattern: MVI on ViewModel (Android or KMP), Koin, Navigation Compose, effects, tests |
-| [circuit-screen](skills/circuit-screen/SKILL.md) | Optional, only for projects already on Circuit: Screen/Presenter/Ui, parcelize shim, presenter tests |
+| [circuit-screen](skills/circuit-screen/SKILL.md) | Optional, only for projects already on Circuit: Screen/Presenter/Ui, navigation stack saved with serialized screen keys, what survives recreation and process death, presenter tests |
 | [views-compose-interop](skills/views-compose-interop/SKILL.md) | Fragments + XML + Compose, SafeArgs navigation from ViewModels, deep links, migration plan |
 | [kmp-ios-interop](skills/kmp-ios-interop/SKILL.md) | iOS composition root, Swift callback bridges, Xcode/framework setup, Kotlin/Native gotchas |
 | [navigation3-compose](skills/navigation3-compose/SKILL.md) | Navigation 3: owned NavKey back stack, per-feature entry providers with Koin, scenes, list-detail, deep links, migration from Navigation Compose |
